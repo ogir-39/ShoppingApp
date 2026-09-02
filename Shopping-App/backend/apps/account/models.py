@@ -10,6 +10,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.CUSTOMER)
     address = models.CharField(max_length=200, null=False, blank=False)
     phone = models.CharField(max_length=20, null=False, blank=False)
+    avatar = models.CharField(max_length=500, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

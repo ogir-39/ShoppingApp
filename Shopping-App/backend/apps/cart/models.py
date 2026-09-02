@@ -5,8 +5,8 @@ class Cart(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class CartItem(models.Model):
-    cart = models.ForeignKey('cart.Cart', on_delete=models.CASCADE,related_name='items')
-    product = models.ForeignKey('catalog.Product', on_delete=models.CASCADE)
+    cart = models.ForeignKey('cart.Cart', on_delete=models.CASCADE)
+    product = models.ForeignKey('catalog.Product', on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 

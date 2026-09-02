@@ -39,12 +39,15 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'drf_yasg',
 
+
     'apps.account',
     'apps.cart',
     'apps.catalog',
     'apps.order',
     'apps.review',
     'apps.voucher',
+    'apps.notification',
+    'apps.report'
 ]
 
 REST_FRAMEWORK = {
@@ -136,5 +139,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-CLIENT_ID = 'Mlf6Nzvqm8AfIaB2eYKqBm6P2N9FSPAduWzDtnlv'
-CLIENT_SECRET = 'l1nx95f7cZjnSUzkz5MurRcBjMks2W4MkAICWfc9SRp5zvGtfleXFI6nMUm9w6NZKq3yI9fBEYyoiEx6HVEPOeckHKoHb7c31tInUHG5ivpNsiCXClW3KuHsOpZlvf7l'
+CLIENT_ID = 'j4lfSoXaX4Cn6lWelukitumNgO2YjqXSZGWNu8nk'
+CLIENT_SECRET = 'TxFQqpyEAjVt5hTbmvorQQ1ZwM7gYSpOhrD3YWTe5EMcND0Jpw2DkefnPEPOe8Dj2z7rWskNLSIaByk8REbCzloA7aBGZ4fmeJS5S46HT9Bhg5wgc0LgsFCxDoZlxDan'
+
+# Cấu hình MoMo Sandbox
+MOMO_PARTNER_CODE = "MOMOBKUN20180529" # Thay bằng mã của bạn
+MOMO_ACCESS_KEY = "klm05TvNCyandm2Z"   # Thay bằng key của bạn
+MOMO_SECRET_KEY = "at67qH6mk8g5i1Pe1JzJWFAoa4syVw=" # Thay bằng secret của bạn
+MOMO_ENDPOINT = "https://test-payment.momo.vn/v2/gateway/api/create"
+
+# Khách thanh toán xong sẽ được MoMo chuyển hướng về trang này (Frontend của bạn)
+MOMO_REDIRECT_URL = "http://localhost:3000/order/success"
+# Domain thật hoặc Ngrok của Backend để MoMo có thể gọi IPN (Webhook) cập nhật trạng thái
+MOMO_IPN_URL = "https://<your-ngrok-domain>/order/orders/momo_webhook/"

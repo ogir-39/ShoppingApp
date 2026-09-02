@@ -26,6 +26,8 @@ urlpatterns = [
     path('order/', include('apps.order.urls')),
     path('review/', include('apps.review.urls')),
     path('voucher/', include('apps.voucher.urls')),
+    path('notification/', include('apps.notification.urls')),
+    path('report/', include('apps.report.urls')),
     path('admin/', admin_site.urls),
     path('o/', include('oauth2_provider.urls',
                        namespace='oauth2_provider')),

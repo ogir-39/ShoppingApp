@@ -28,10 +28,10 @@ class ProductViewSet(viewsets.ViewSet,generics.ListAPIView,generics.CreateAPIVie
     serializer_class = ProductSerializer
     permission_classes = [IsStaffOrAdmin]
 
-@method_decorator(name="list", decorator=swagger_auto_schema(tags=['product']))
-@method_decorator(name="create", decorator=swagger_auto_schema(tags=['product']))
-@method_decorator(name="update", decorator=swagger_auto_schema(tags=['product']))
-@method_decorator(name="partial_update", decorator=swagger_auto_schema(tags=['product']))
+@method_decorator(name="list", decorator=swagger_auto_schema(tags=['ProductImage']))
+@method_decorator(name="create", decorator=swagger_auto_schema(tags=['ProductImage']))
+@method_decorator(name="update", decorator=swagger_auto_schema(tags=['ProductImage']))
+@method_decorator(name="partial_update", decorator=swagger_auto_schema(tags=['ProductImage']))
 class ProductImageViewSet(viewsets.ViewSet,generics.ListAPIView,generics.CreateAPIView,generics.UpdateAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
