@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from oauth2_provider.contrib.rest_framework import permissions
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
@@ -23,9 +23,27 @@ from core.permissions import IsAdmin, IsStaffOrAdmin
 class VoucherViewSet(viewsets.ModelViewSet):
     queryset = Voucher.objects.all()
     serializer_class = VoucherSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter]
+    search_fields = ['code']
     filterset_fields = ['voucher_type','discount_type']
     permission_classes = [IsStaffOrAdmin]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role in ['ADMIN', 'STAFF']:
+            q = Voucher.objects.all().order_by('-created_at')
+        else:
+            q = Voucher.objects.filter(user=user).order_by('-created_at')
+
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+
+        if start_date:
+            q = q.filter(created_at__date__gte=start_date)
+        if end_date:
+            q = q.filter(created_at__date__lte=end_date)
+
+        return q.order_by('-created_at')
 
     @swagger_auto_schema(tags=['Voucher'], operation_summary="Lấy danh sách Voucher khách có thể dùng cho giỏ hàng hiện tại")
     @action(detail=False, methods=['get'], url_path='usable')

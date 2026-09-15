@@ -1,5 +1,5 @@
 from oauth2_provider.contrib.rest_framework import permissions
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, generics, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -19,9 +19,9 @@ class NotificationViewSet(viewsets.ViewSet, generics.ListAPIView, generics.Creat
             return Notification.objects.none()
 
         if user.role == UserRole.ADMIN:
-            return Notification.objects.all()
+            return Notification.objects.all().order_by('-created_at')
 
-        return Notification.objects.filter(user=user)
+        return Notification.objects.filter(user=user).order_by('-created_at')
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)

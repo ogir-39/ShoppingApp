@@ -24,7 +24,12 @@ SECRET_KEY = 'django-insecure-8%4ip8fm+gc9(@0%jnkbb*-l08(!8qeccedfzl#dxamuiyfh$*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'matrix-plop-pavement.ngrok-free.dev',
+    'localhost',
+    '127.0.0.1',
+    '*'
+]
 
 # Application definition
 
@@ -38,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'oauth2_provider',
     'drf_yasg',
+    'vnpay',
 
 
     'apps.account',
@@ -139,16 +145,22 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-CLIENT_ID = 'j4lfSoXaX4Cn6lWelukitumNgO2YjqXSZGWNu8nk'
-CLIENT_SECRET = 'TxFQqpyEAjVt5hTbmvorQQ1ZwM7gYSpOhrD3YWTe5EMcND0Jpw2DkefnPEPOe8Dj2z7rWskNLSIaByk8REbCzloA7aBGZ4fmeJS5S46HT9Bhg5wgc0LgsFCxDoZlxDan'
+CSRF_TRUSTED_ORIGINS = [
+    'https://matrix-plop-pavement.ngrok-free.dev'
+]
 
-# Cấu hình MoMo Sandbox
-MOMO_PARTNER_CODE = "MOMOBKUN20180529" # Thay bằng mã của bạn
-MOMO_ACCESS_KEY = "klm05TvNCyandm2Z"   # Thay bằng key của bạn
-MOMO_SECRET_KEY = "at67qH6mk8g5i1Pe1JzJWFAoa4syVw=" # Thay bằng secret của bạn
-MOMO_ENDPOINT = "https://test-payment.momo.vn/v2/gateway/api/create"
+CLIENT_ID = 'bjPhc8bnXaSuFMmec52RkTAZm4WKaHKtgTxzV1gN'
+CLIENT_SECRET = 'pMrExNw20ALi4SK7fz4SlmP6Ukd4hQHrqOa9rL5iac8lNImqssxEwIlIyQwd3Y6gEpJUWfguE7bzkiIE8p0STrNVVNCUqB7GPKs9XYwDrjud6ot9y3Dwk9pMUUanjWiM'
 
-# Khách thanh toán xong sẽ được MoMo chuyển hướng về trang này (Frontend của bạn)
-MOMO_REDIRECT_URL = "http://localhost:3000/order/success"
-# Domain thật hoặc Ngrok của Backend để MoMo có thể gọi IPN (Webhook) cập nhật trạng thái
-MOMO_IPN_URL = "https://<your-ngrok-domain>/order/orders/momo_webhook/"
+# Cấu hình VNPay Sandbox
+VNPAY_TMN_CODE = "ZPBAPVV9"
+VNPAY_HASH_SECRET = "TGRBWAVTZWTBYYDPYXAXUTYLNGJHEZZT"
+VNPAY_PAYMENT_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+VNPAY_RETURN_URL = "https://matrix-plop-pavement.ngrok-free.dev/order/vnpay_return/"
+
+#Thông tin test vnpay
+#Ngân hàng: NCB
+#Số thẻ: 9704198526191432198
+#Tên: NGUYEN VAN A
+#Ngày phát hành: 07/15
+#OTP: 123456

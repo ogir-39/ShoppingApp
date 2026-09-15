@@ -76,7 +76,7 @@ class OrderPermission(permissions.BasePermission):
 
         # STAFF: Chỉ được quyền Xem (GET) mọi đơn hàng
         if user.role == 'STAFF':
-            return request.method in ['GET', 'HEAD', 'OPTIONS']
+            return request.method in ['GET', 'HEAD', 'OPTIONS','PATCH']
 
         # CUSTOMER: Chỉ được Xem (GET) đơn hàng do chính mình đặt
         if user.role == 'CUSTOMER':

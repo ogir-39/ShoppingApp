@@ -56,15 +56,88 @@ Notification = apps.get_model('notification', 'Notification')
 today = timezone.now()
 
 print(">>> 6.1 Đang tạo Danh mục, Sản phẩm & Hình ảnh (ProductImage)...")
-c_tech, _ = Category.objects.get_or_create(name='Điện thoại & Laptop')
-c_home, _ = Category.objects.get_or_create(name='Đồ gia dụng')
-c_fashion, _ = Category.objects.get_or_create(name='Thời trang')
+# 1. Tạo 10 Danh mục
+category_names = [
+    'Điện thoại & Phụ kiện', 'Laptop & Máy tính', 'Đồ gia dụng', 'Thời trang Nam',
+    'Thời trang Nữ', 'Giày dép', 'Đồng hồ & Trang sức', 'Sức khỏe & Sắc đẹp',
+    'Thể thao & Du lịch', 'Sách & Văn phòng phẩm'
+]
+categories = {}
+for name in category_names:
+    cat, _ = Category.objects.get_or_create(name=name)
+    categories[name] = cat
 
+# 2. Tạo 50 Sản phẩm (Mỗi danh mục 5 sản phẩm)
 products_data = [
-    (c_tech, 'iPhone 15 Pro Max 256GB', 'Điện thoại Apple cao cấp', 25000000, 29000000, 50, 0.2),
-    (c_tech, 'MacBook Pro M3 14 inch', 'Laptop Apple chuyên nghiệp', 35000000, 39990000, 20, 1.6),
-    (c_home, 'Nồi chiên không dầu Philips', 'Dung tích 5L, công suất 2000W', 1500000, 2200000, 100, 5.0),
-    (c_fashion, 'Áo thun nam Cotton', 'Thoáng mát, thấm hút tốt', 80000, 150000, 200, 0.2),
+    # Điện thoại
+    (categories['Điện thoại & Phụ kiện'], 'iPhone 15 Pro Max 256GB', 'Điện thoại Apple cao cấp', 25000000, 29000000, 50, 0.2),
+    (categories['Điện thoại & Phụ kiện'], 'Samsung Galaxy S24 Ultra', 'Flagship Samsung 2024', 23000000, 27000000, 40, 0.2),
+    (categories['Điện thoại & Phụ kiện'], 'Xiaomi 14 Pro', 'Camera Leica cực đỉnh', 18000000, 21000000, 30, 0.2),
+    (categories['Điện thoại & Phụ kiện'], 'Oppo Reno 11 5G', 'Chuyên gia chân dung', 9000000, 11000000, 60, 0.2),
+    (categories['Điện thoại & Phụ kiện'], 'Vivo V30', 'Thiết kế mỏng nhẹ', 8000000, 10000000, 45, 0.2),
+
+    # Laptop
+    (categories['Laptop & Máy tính'], 'MacBook Pro M3 14 inch', 'Laptop Apple chuyên nghiệp', 35000000, 39990000, 20, 1.6),
+    (categories['Laptop & Máy tính'], 'Dell XPS 15 9530', 'Màn hình OLED viền mỏng', 38000000, 42000000, 15, 1.9),
+    (categories['Laptop & Máy tính'], 'Lenovo ThinkPad X1 Carbon', 'Bàn phím gõ tốt nhất', 33000000, 37000000, 18, 1.1),
+    (categories['Laptop & Máy tính'], 'Asus ROG Strix G15', 'Laptop Gaming mạnh mẽ', 25000000, 28000000, 25, 2.3),
+    (categories['Laptop & Máy tính'], 'HP Envy x360', 'Laptop xoay gập cảm ứng', 20000000, 23000000, 30, 1.4),
+
+    # Gia dụng
+    (categories['Đồ gia dụng'], 'Nồi chiên không dầu Philips 5L', 'Công suất 2000W', 1500000, 2200000, 100, 5.0),
+    (categories['Đồ gia dụng'], 'Máy lọc không khí Xiaomi 4 Pro', 'Lọc bụi mịn PM2.5', 2500000, 3200000, 80, 4.5),
+    (categories['Đồ gia dụng'], 'Robot hút bụi Dreame L10s', 'Tự động giặt giẻ', 12000000, 15000000, 40, 6.0),
+    (categories['Đồ gia dụng'], 'Lò vi sóng Sharp 20L', 'Có chức năng nướng', 1000000, 1300000, 120, 11.0),
+    (categories['Đồ gia dụng'], 'Máy xay sinh tố Panasonic', 'Cối thủy tinh siêu bền', 800000, 1100000, 90, 2.5),
+
+    # Thời trang Nam
+    (categories['Thời trang Nam'], 'Áo thun nam Cotton Compact', 'Thoáng mát, thấm hút tốt', 80000, 150000, 200, 0.2),
+    (categories['Thời trang Nam'], 'Áo sơ mi nam dài tay', 'Chống nhăn hiệu quả', 150000, 250000, 150, 0.3),
+    (categories['Thời trang Nam'], 'Quần Jean nam Slimfit', 'Co giãn thoải mái', 200000, 350000, 180, 0.5),
+    (categories['Thời trang Nam'], 'Áo khoác dù nam', 'Chống nước nhẹ', 250000, 400000, 100, 0.4),
+    (categories['Thời trang Nam'], 'Quần Kaki nam ống suông', 'Phong cách thanh lịch', 180000, 280000, 120, 0.4),
+
+    # Thời trang Nữ
+    (categories['Thời trang Nữ'], 'Váy hoa nhí dáng dài', 'Phong cách Vintage', 150000, 250000, 150, 0.3),
+    (categories['Thời trang Nữ'], 'Áo kiểu nữ cổ vuông', 'Tôn vóc dáng', 120000, 190000, 200, 0.2),
+    (categories['Thời trang Nữ'], 'Quần ống rộng lưng cao', 'Hack dáng cực đỉnh', 180000, 280000, 180, 0.4),
+    (categories['Thời trang Nữ'], 'Chân váy chữ A', 'Dễ phối đồ', 130000, 220000, 160, 0.2),
+    (categories['Thời trang Nữ'], 'Áo khoác Cardigan len', 'Mềm mịn ấm áp', 160000, 260000, 100, 0.3),
+
+    # Giày dép
+    (categories['Giày dép'], 'Giày Sneaker nam trắng', 'Phong cách Hàn Quốc', 250000, 400000, 200, 0.8),
+    (categories['Giày dép'], 'Giày cao gót nữ 7cm', 'Mũi nhọn đính đá', 200000, 350000, 150, 0.6),
+    (categories['Giày dép'], 'Giày chạy bộ thể thao', 'Đế siêu nhẹ siêu êm', 400000, 600000, 120, 0.5),
+    (categories['Giày dép'], 'Dép quai ngang nam', 'Chất liệu EVA chống trượt', 80000, 150000, 300, 0.3),
+    (categories['Giày dép'], 'Sandal nữ dây chéo', 'Phù hợp đi dạo, đi biển', 120000, 200000, 180, 0.4),
+
+    # Đồng hồ & Trang sức
+    (categories['Đồng hồ & Trang sức'], 'Đồng hồ nam Casio Edifice', 'Dây kim loại', 1800000, 2500000, 50, 0.3),
+    (categories['Đồng hồ & Trang sức'], 'Đồng hồ nữ DW Classic', 'Dây lưới thời trang', 2000000, 2800000, 60, 0.2),
+    (categories['Đồng hồ & Trang sức'], 'Dây chuyền bạc 925 nữ', 'Mặt đính đá cz', 200000, 350000, 100, 0.1),
+    (categories['Đồng hồ & Trang sức'], 'Bông tai ngọc trai', 'Thiết kế tinh xảo', 150000, 250000, 120, 0.1),
+    (categories['Đồng hồ & Trang sức'], 'Vòng tay nam da thật', 'Khóa nam châm', 100000, 180000, 80, 0.1),
+
+    # Sức khỏe & Sắc đẹp
+    (categories['Sức khỏe & Sắc đẹp'], 'Kem chống nắng SPF 50+', 'Bảo vệ da toàn diện', 150000, 250000, 300, 0.1),
+    (categories['Sức khỏe & Sắc đẹp'], 'Sữa rửa mặt tạo bọt', 'Làm sạch sâu', 90000, 150000, 250, 0.2),
+    (categories['Sức khỏe & Sắc đẹp'], 'Nước tẩy trang Micellar', 'Dành cho da nhạy cảm', 120000, 180000, 200, 0.3),
+    (categories['Sức khỏe & Sắc đẹp'], 'Son kem lì lâu trôi', 'Nhiều tone màu', 180000, 280000, 400, 0.1),
+    (categories['Sức khỏe & Sắc đẹp'], 'Dầu gội phục hồi hư tổn', 'Dưỡng chất từ thiên nhiên', 140000, 210000, 150, 0.5),
+
+    # Thể thao & Du lịch
+    (categories['Thể thao & Du lịch'], 'Balo du lịch chống nước', 'Dung tích 40L', 250000, 450000, 100, 0.8),
+    (categories['Thể thao & Du lịch'], 'Thảm tập Yoga TPE', 'Độ dày 8mm', 120000, 190000, 150, 1.0),
+    (categories['Thể thao & Du lịch'], 'Lều cắm trại 4 người', 'Gấp gọn tiện lợi', 400000, 650000, 50, 2.5),
+    (categories['Thể thao & Du lịch'], 'Vợt cầu lông Carbon', 'Siêu nhẹ siêu bền', 300000, 500000, 80, 0.2),
+    (categories['Thể thao & Du lịch'], 'Bình giữ nhiệt inox', 'Giữ nóng lạnh 12h', 100000, 180000, 200, 0.4),
+
+    # Sách & Văn phòng phẩm
+    (categories['Sách & Văn phòng phẩm'], 'Sách Đắc Nhân Tâm', 'Sách kỹ năng sống', 50000, 80000, 300, 0.3),
+    (categories['Sách & Văn phòng phẩm'], 'Combo 5 Bút bi mực xanh', 'Ngòi 0.5mm êm ái', 15000, 25000, 500, 0.1),
+    (categories['Sách & Văn phòng phẩm'], 'Sổ tay ghi chép bìa da A5', '200 trang, giấy chống lóa', 40000, 65000, 200, 0.4),
+    (categories['Sách & Văn phòng phẩm'], 'Balo học sinh chống gù', 'Nhiều ngăn chứa đồ', 150000, 250000, 120, 0.6),
+    (categories['Sách & Văn phòng phẩm'], 'Sách Lược Sử Loài Người', 'Sách khoa học bán chạy', 120000, 180000, 100, 0.5),
 ]
 
 all_products = []
@@ -77,6 +150,7 @@ for cat, name, desc, cost, sell, qty, weight in products_data:
         }
     )
     all_products.append(p)
+    # Tự động tạo 2 ảnh giả lập cho mỗi sản phẩm
     if not ProductImage.objects.filter(product=p).exists():
         ProductImage.objects.create(product=p, image=f'thumbnail_{p.id}.png', is_thumbnail=True, sort_order=1)
         ProductImage.objects.create(product=p, image=f'detail1_{p.id}.png', is_thumbnail=False, sort_order=2)

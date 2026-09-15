@@ -15,7 +15,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    prod_images = ProductImageSerializer(many=True, required=False)
+    prod_images = ProductImageSerializer(source='productimage_set',many=True, required=False)
     class Meta:
         model = Product
         fields = '__all__'

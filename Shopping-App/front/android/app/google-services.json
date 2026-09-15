@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "354505311187",
+    "project_id": "shoppingapp-b1743",
+    "storage_bucket": "shoppingapp-b1743.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354505311187:android:8314f3440ea856d69da526",
+        "android_client_info": {
+          "package_name": "com.example.front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYvgsPO3EJEE4Bgex5wbQXE7N6uGCefCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354505311187:android:47fc772c92768d949da526",
+        "android_client_info": {
+          "package_name": "com.tpv.shoppingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYvgsPO3EJEE4Bgex5wbQXE7N6uGCefCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,32 +1,37 @@
 from django.db import transaction
-from rest_framework import serializers, permissions
+from rest_framework import serializers
+from django.contrib.auth.hashers import check_password
 
-from apps import cart
 from apps.account.models import Staff, Customer, User, UserRole
 from apps.cart.models import Cart
-from core.permissions import IsStaffOrAdmin
 
-class SimpleUserSerializer(serializers.ModelSerializer): #STAFF
+class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'role', 'first_name', 'last_name', 'email', 'phone', 'address','created_at','avatar']
+        fields = ['id', 'role', 'first_name', 'last_name', 'email', 'phone', 'address', 'created_at', 'avatar','is_active']
+        read_only_fields = ['id', 'created_at']
 
-        read_only_fields = ['id', 'role', 'created_at']
-
-class UserSerializer(serializers.ModelSerializer): #ADMIN
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = SimpleUserSerializer.Meta.model
         fields = SimpleUserSerializer.Meta.fields + ['username', 'password']
         extra_kwargs = {
-            'password': {
-                'write_only': True
-            }
+            'password': {'write_only': True}
         }
+
+    # CHỈ CHÈN COINS VÀO KHI ROLE LÀ CUSTOMER
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.role == UserRole.CUSTOMER:
+            try:
+                data['coins'] = float(instance.customer.coins)
+            except Customer.DoesNotExist:
+                data['coins'] = 0.0
+        return data
 
     def create(self, validated_data):
         with transaction.atomic():
             user = User(**validated_data)
-
             user.set_password(user.password)
             user.save()
 
@@ -38,40 +43,40 @@ class UserSerializer(serializers.ModelSerializer): #ADMIN
 
             return user
 
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
+class CurrentUserSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(write_only=True, required=False)
 
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        if password:
-            instance.set_password(password)
-
-        instance.save()
-        return instance
-
-class CurrentUserSerializer(serializers.ModelSerializer): #CURENT-USER
     class Meta:
         model = SimpleUserSerializer.Meta.model
-        fields = SimpleUserSerializer.Meta.fields + ['username', 'password']
-
+        fields = SimpleUserSerializer.Meta.fields + ['username', 'password', 'old_password']
         read_only_fields = ['id', 'role', 'created_at']
-
         extra_kwargs = {
-            'password': {
-                'write_only': True,
-                'required': False
-            }
+            'password': {'write_only': True, 'required': False}
         }
 
+    # CHỈ CHÈN COINS VÀO KHI ROLE LÀ CUSTOMER
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.role == UserRole.CUSTOMER:
+            try:
+                data['coins'] = float(instance.customer.coins)
+            except Customer.DoesNotExist:
+                data['coins'] = 0.0
+        return data
+
     def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
+        old_password = validated_data.pop('old_password', None)
+        new_password = validated_data.pop('password', None)
+
+        if new_password:
+            if not old_password:
+                raise serializers.ValidationError({"old_password": "Vui lòng nhập mật khẩu hiện tại."})
+            if not check_password(old_password, instance.password):
+                raise serializers.ValidationError({"old_password": "Mật khẩu hiện tại không đúng."})
+            instance.set_password(new_password)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
-
-        if password:
-            instance.set_password(password)
 
         instance.save()
         return instance
