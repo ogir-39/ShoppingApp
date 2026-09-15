@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'drf_yasg',
     'vnpay',
+    'django_filters',
 
 
     'apps.account',
